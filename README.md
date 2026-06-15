@@ -1,17 +1,23 @@
-# 北美 3C 赛道广告投放与竞争基准审计
+# 颜忠毅 · 广告投放 Portfolio
 
-> Anker 全球广告专员岗位求职作品集 · 颜忠毅
+> 数据驱动的广告投放候选人 · 2026
 
-## 关于这份作品集
+## 作品集入口
 
-这是一份独立完成的北美 3C 配件赛道竞品审计报告，覆盖 Anker、Baseus、Ugreen 三品牌的全链路竞争分析。
+**个人主页**：[`index.html`](index.html) — 汇总全部作品的导航页
+
+## 作品 1：北美 3C 赛道广告投放与竞争基准审计
+
+> 申请 Anker 全球广告专员岗位
+
+独立完成的北美 3C 配件赛道竞品审计报告，覆盖 Anker、Baseus、Ugreen 三品牌的全链路竞争分析。
 
 **数据来源**：Similarweb Pro、Meta Ads Library、Wappalyzer（均为公开工具）  
 **统计周期**：2026 年 5 月 - 6 月  
 **目标市场**：北美 (US)，Desktop & Mobile  
 **工具辅助**：结合主流 AI 工具提升数据梳理与排版效率
 
-## 内容结构
+### 内容结构
 
 | 页面 | 文件 | 内容 |
 |------|------|------|
@@ -22,6 +28,12 @@
 | 第 5 页 | `pages/page5-campaign-crosscheck.html` | 节点策略与数据交叉印证 |
 | 第 6 页 | `pages/page6-action-plan.html` | 能力总结与岗位匹配 |
 | PPT 版 | `ppt/audit-report.html` | 6 页可翻页演示文稿（支持演讲者模式） |
+
+## 作品 2：DTC 竞品全链路审计
+
+> 申请影石 Insta360 广告投放管培生岗位
+
+基于 DTC Audit Engine 框架，对 DJI、Insta360、GoPro 三品牌的全链路竞品拆解。覆盖大盘流量定性、前端获客测款策略、后端 Martech 技术栈识别与新进买手 SOP 输出。
 
 ## 如何查看
 
