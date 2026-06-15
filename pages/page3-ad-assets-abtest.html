@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前端资产规模与A/B测试框架 — 第3页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei','DM Sans',sans-serif;
+    background:#161616;
+    color:#f5f5f7;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .grid {
+    display:grid;
+    width:1200px;
+    padding:28px;
+    gap:6px;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:auto auto;
+    grid-template-areas:
+      "c1 c1 c4 c4"
+      "c2 c2 c3 c3";
+  }
+
+  /* Brand Colors */
+  .c-anker{color:#2679FF}.c-baseus{color:#F5A623}.c-ugreen{color:#3ED9A1}
+  .bg-anker{background:#2679FF}.bg-baseus{background:#F5A623}.bg-ugreen{background:#3ED9A1}
+  .fs{font-family:'Sora',sans-serif}.fd{font-family:'DM Sans',sans-serif}
+
+  /* Card Base — exact mirror */
+  .card {
+    border-radius:20px;
+    padding:28px 28px 24px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+  }
+
+  .card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    border-radius:20px 20px 0 0;z-index:1;
+  }
+
+  .card-c1 { background:linear-gradient(160deg, #14203a 0%, #1c1c20 50%, #1c1c20 100%); }
+  .card-c1::before { background:linear-gradient(90deg, #2679FF, #2679FF, rgba(38,121,255,0.5)); }
+  .card-c2 { background:linear-gradient(160deg, #1a0f2e 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-c2::before { background:linear-gradient(90deg, #7c3aed, #a855f7, rgba(124,58,237,0.4)); }
+  .card-c3 { background:linear-gradient(160deg, #0d1f2e 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-c3::before { background:linear-gradient(90deg, #06b6d4, #3ED9A1, rgba(6,182,212,0.4)); }
+  .card-c4 { background:linear-gradient(160deg, #1f1515 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-c4::before { background:linear-gradient(90deg, #e05e5e, #b83232); }
+  .card-c4::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.04);
+    background:radial-gradient(ellipse at 80% 10%, rgba(224,94,94,0.05) 0%, transparent 50%);
+  }
+
+  .card-c1{grid-area:c1}.card-c2{grid-area:c2}.card-c3{grid-area:c3}.card-c4{grid-area:c4}
+
+  /* Glass overlay effects for C2 & C3 */
+  .card-c2::after, .card-c3::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,0.04);
+  }
+  .card-c2::after { background:radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.06) 0%, transparent 60%); }
+  .card-c3::after { background:radial-gradient(ellipse at 70% 20%, rgba(6,182,212,0.06) 0%, transparent 60%); }
+
+  .label-sm {
+    font-size:9px;font-weight:600;color:#a0a0a8;
+    text-transform:uppercase;letter-spacing:0.12em;
+  }
+  .title-md {
+    font-size:15px;font-weight:700;color:#e8e8ed;
+    letter-spacing:0.02em;margin-top:3px;
+  }
+
+  /* ===== CARD 1: META ADS VOLUME ===== */
+  .chart-area {
+    display:flex;align-items:flex-end;justify-content:space-around;
+    min-height:180px;margin-top:auto;padding-top:14px;padding-bottom:2px;
+  }
+  .bar-group { display:flex;flex-direction:column;align-items:center;gap:6px; }
+  .bar-col { width:56px;border-radius:7px 7px 0 0; }
+  
+  /* Scaling based on Max 800 active assets */
+  .bar-anker-p3 {
+    background:linear-gradient(180deg, #2679FF 0%, #1a5cd4 100%);
+    box-shadow:0 0 24px rgba(38,121,255,0.45);
+    height:180px;
+  }
+  .bar-baseus-p3 {
+    background:linear-gradient(180deg, #F5A623 0%, #D4891A 100%);
+    height:41px; /* 180 * (180/800) */
+  }
+  .bar-ugreen-p3 {
+    background:linear-gradient(180deg, #3ED9A1 0%, #0ea26e 100%);
+    height:25px; /* 180 * (110/800) */
+  }
+  .bar-name { font-size:12px;font-weight:600;letter-spacing:0.06em; }
+  .bar-num { font-size:14px;font-weight:700; }
+
+  /* ===== CARD 2 & 3: AB TEST DESIGN ===== */
+  .list-wrap { display:flex;flex-direction:column;gap:0;margin-top:14px; }
+  .list-row { display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06); }
+  .list-row:last-child { border-bottom:none; padding-bottom:0; }
+  .list-dot { width:8px;height:8px;border-radius:3px;margin-top:5px;flex-shrink:0; }
+  .list-brand { font-size:13px;font-weight:700;letter-spacing:0.02em; }
+  .list-desc { font-size:11px;color:#c8c8d0;line-height:1.4;margin-top:2px; }
+
+  /* ===== CARD 4: COMPLIANCE MATRIX ===== */
+  .sec-wrap { display:flex;flex-direction:column;flex:1;margin-top:10px; }
+  .sec-block { display:flex;flex-direction:column;gap:8px;padding:10px 0; }
+  .sec-block + .sec-block { border-top:1px solid rgba(255,255,255,0.1); padding-top:14px; }
+  .sec-label { font-size:9px;font-weight:600;color:#a0a0a8;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:2px; }
+  .triple { display:flex;gap:6px; }
+  .triple-cell {
+    flex:1;display:flex;flex-direction:column;gap:3px;
+    background:rgba(255,255,255,0.025);border-radius:10px;padding:10px 12px;
+    border:1px solid rgba(255,255,255,0.05);
+  }
+  .tc-brand { font-size:11px;font-weight:600;letter-spacing:0.03em;color:#e8e8ed; }
+  .tc-val { font-size:16px;font-weight:800;letter-spacing:-0.02em;line-height:1.2;color:#f55f5f; }
+  .tc-note { font-size:10px;color:#b0b0b8;line-height:1.35; }
+</style>
+</head>
+<body>
+
+<div class="grid">
+
+  <!-- ====== CARD 1: 在投资产规模 ====== -->
+  <div class="card card-c1">
+    <div>
+      <div class="label-sm fd">Active Ads Volume Matrix</div>
+      <div class="title-md">北美 Meta 在投资产规模对标（截止到2026/06/15）</div>
+    </div>
+
+    <div class="chart-area">
+      <div class="bar-group">
+        <div class="bar-col bar-anker-p3"></div>
+        <span class="bar-name c-anker fd">Anker</span>
+        <span class="bar-num c-anker fs">~800</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar-col bar-baseus-p3"></div>
+        <span class="bar-name c-baseus fd">Baseus</span>
+        <span class="bar-num c-baseus fs">~180</span>
+      </div>
+      <div class="bar-group">
+        <div class="bar-col bar-ugreen-p3"></div>
+        <span class="bar-name c-ugreen fd">Ugreen</span>
+        <span class="bar-num c-ugreen fs">~110</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CARD 2: A/B测试组A ====== -->
+  <div class="card card-c2" style="position:relative">
+    <div style="position:absolute;top:16px;right:20px;font-size:28px;font-weight:800;color:rgba(168,85,247,0.30);font-family:'Sora',sans-serif;z-index:0;line-height:1">A组</div>
+    <div style="position:relative;z-index:2">
+      <div class="label-sm fd">Hypothetical Framework · Based on Observed Creative Patterns</div>
+      <div class="title-md" style="color:#c4b5fd">基于观察反推的 A/B 测款假设</div>
+    </div>
+
+    <div class="list-wrap">
+      <div class="list-row">
+        <div class="list-dot" style="background:#a855f7"></div>
+        <div>
+          <div class="list-brand" style="color:#a855f7">测试核心：痛点感知与信任背书</div>
+          <div class="list-desc">视觉聚焦于"旧线破损、接触不良、充电设备严重发热"等强痛点写实场景。</div>
+        </div>
+      </div>
+      <div class="list-row">
+        <div class="list-dot" style="background:#a855f7"></div>
+        <div>
+          <div class="list-brand" style="color:#a855f7">核心卖点：Care Mode 低温安全感</div>
+          <div class="list-desc">核心推导温控芯片技术，向泛用户人群传递绝对的安全屏障，测试转换率（CVR）底线。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CARD 3: A/B测试组B ====== -->
+  <div class="card card-c3" style="position:relative">
+    <div style="position:absolute;top:16px;right:20px;font-size:28px;font-weight:800;color:rgba(6,182,212,0.30);font-family:'Sora',sans-serif;z-index:0;line-height:1">B组</div>
+    <div style="position:relative;z-index:2">
+      <div class="label-sm fd">Hypothetical Framework · Based on Observed Creative Patterns</div>
+      <div class="title-md" style="color:#67e8f9">基于观察反推的 A/B 测款假设</div>
+    </div>
+
+    <div class="list-wrap">
+      <div class="list-row">
+        <div class="list-dot" style="background:#06b6d4"></div>
+        <div>
+          <div class="list-brand" style="color:#06b6d4">测试核心：极客价值与情绪共鸣</div>
+          <div class="list-desc">视觉特写充电头插入墙面瞬间，数显屏、交互流光极速亮起的具有科技美学的微观动态。</div>
+        </div>
+      </div>
+      <div class="list-row">
+        <div class="list-dot" style="background:#06b6d4"></div>
+        <div>
+          <div class="list-brand" style="color:#06b6d4">核心卖点：实时功率反馈</div>
+          <div class="list-desc">面向极客人群打出桌面数码交互价值，拉高首发期前端素材点击率（CTR）峰值。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CARD 4: 合规风控 ====== -->
+  <div class="card card-c4">
+    <div>
+      <div class="label-sm fd">Meta Ads Compliance &amp; Risk Control</div>
+      <div class="title-md">Meta 广告投放字符合规风控矩阵</div>
+    </div>
+
+    <div class="sec-wrap" style="margin-top:30px;">
+      <div class="sec-block" style="padding-top:4px;">
+        <div class="sec-label fd">Core Specs 核心约束参数</div>
+        <div class="triple">
+          <div class="triple-cell" style="border-color: rgba(224,94,94,0.2);">
+            <span class="tc-brand fd">Primary Text</span>
+            <span class="tc-val fs">≤ 3 Lines</span>
+            <span class="tc-note">规避触发"See More"折叠，保障核心卖点前置曝光，维持前端点击率稳定性。</span>
+          </div>
+          <div class="triple-cell" style="border-color: rgba(224,94,94,0.2);">
+            <span class="tc-brand fd">Headline</span>
+            <span class="tc-val fs">&lt; 40 Chars</span>
+            <span class="tc-note">严格约束字符边界，规避移动端 Truncation 截断带来的语义与卖点流失。</span>
+          </div>
+          <div class="triple-cell" style="border-color: rgba(224,94,94,0.2);">
+            <span class="tc-brand fd">CTA Button</span>
+            <span class="tc-val fs">Shop Now</span>
+            <span class="tc-note">核心聚焦强转化路径 (Shop Now)，减少在底漏斗 (BOF) 阶段使用软导向按钮造成的转化意图损耗。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="grid-column:1/-1;text-align:center;margin-top:4px;font-size:10px;color:#888;font-family:'DM Sans',sans-serif;">测试风控底线：单组日预算 $150，若 CTR &lt; 1.2% 或 CPA &gt; $35，即刻关停计划并归档素材。</div>
+  <div style="grid-column:1/-1;font-size:8px;color:#555;font-family:'DM Sans',sans-serif;letter-spacing:0.03em;text-align:left;margin-top:2px;">*Data Source: Meta Ads Library. GEO: North America (US). Period: June 2026.</div>
+
+</div>
+
+</body>
+</html>

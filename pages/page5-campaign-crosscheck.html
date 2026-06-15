@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>节点战役与数据交叉印证 — 第5页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei','DM Sans',sans-serif;
+    background:#161616;
+    color:#f5f5f7;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* 3列网格系统重构 */
+  .grid {
+    display:grid;
+    width:1200px;
+    padding:28px;
+    gap:8px;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-rows:auto auto;
+    grid-template-areas:
+      "c1 c1 c1"
+      "c2 c3 c4";
+  }
+
+  /* 品牌色系统 */
+  .c-anker{color:#2679FF}.c-baseus{color:#F5A623}.c-ugreen{color:#3ED9A1}.c-alert{color:#f55f5f}
+  .fs{font-family:'Sora',sans-serif}.fd{font-family:'DM Sans',sans-serif}
+
+  /* 卡片基准样式 */
+  .card {
+    border-radius:20px;
+    padding:26px 28px 24px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    position:relative;
+  }
+
+  .card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    border-radius:20px 20px 0 0;z-index:1;
+  }
+
+  /* 卡片背景与顶部高亮颜色映射 */
+  .card-c1 { background:linear-gradient(160deg, #14241e 0%, #1c1c20 60%, #1c1c20 100%); grid-area:c1; }
+  .card-c1::before { background:linear-gradient(90deg, #3ED9A1, #0ea26e); }
+  
+  .card-c2 { background:linear-gradient(160deg, #1e1e22 0%, #1c1c20 60%, #1c1c20 100%); grid-area:c2; }
+  .card-c2::before { background:linear-gradient(90deg, #F5A623, #D4891A); }
+  
+  .card-c3 { background:linear-gradient(160deg, #141e2e 0%, #1c1c20 60%, #1c1c20 100%); grid-area:c3; }
+  .card-c3::before { background:linear-gradient(90deg, #2679FF, #1a5cd4); }
+  
+  .card-c4 { background:linear-gradient(160deg, #221c1c 0%, #1c1c20 60%, #1c1c20 100%); grid-area:c4; }
+  .card-c4::before { background:linear-gradient(90deg, #f55f5f, #b33232); }
+
+  .card-c1::after, .card-c2::after, .card-c3::after, .card-c4::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    border-radius:20px;border:1px solid rgba(255,255,255,0.04);
+  }
+  .card-c1::after { background:radial-gradient(ellipse at 50% 10%, rgba(62,217,161,0.06) 0%, transparent 55%); }
+  .card-c2::after { background:radial-gradient(ellipse at 60% 10%, rgba(245,166,35,0.05) 0%, transparent 55%); }
+  .card-c3::after { background:radial-gradient(ellipse at 60% 10%, rgba(38,121,255,0.06) 0%, transparent 55%); }
+  .card-c4::after { background:radial-gradient(ellipse at 60% 10%, rgba(245,95,95,0.05) 0%, transparent 55%); }
+
+  .label-sm { font-size:9px; font-weight:600; color:#a0a0a8; text-transform:uppercase; letter-spacing:0.12em; }
+  .title-md { font-size:16px; font-weight:700; color:#e8e8ed; letter-spacing:0.02em; margin-top:4px; }
+
+  /* ===== 空间与排版系统 ===== */
+  .sec-wrap { display:flex; flex-direction:column; flex:1; margin-top:16px; }
+  
+  .single-cell {
+    display:flex; flex-direction:column; justify-content:space-between;
+    background:rgba(255,255,255,0.015); border-radius:12px; 
+    padding:20px; border:1px solid rgba(255,255,255,0.04);
+    height: 100%;
+  }
+  
+  .tc-title { font-size:18px; font-weight:800; letter-spacing:-0.01em; line-height:1.2; margin-bottom:12px; }
+  
+  /* 标签系统 */
+  .tag-group { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .tag {
+    display:flex; align-items:center; border-radius:6px; overflow:hidden;
+    font-family:'DM Sans',sans-serif; font-size:9px; font-weight:700; letter-spacing:0.04em;
+    border:1px solid;
+  }
+  .tag-label { padding:4px 6px; background:rgba(255,255,255,0.05); color:#c8c8d0; }
+  .tag-val { padding:4px 6px; }
+  
+  .tag.ugreen { border-color:rgba(62,217,161,0.3); }
+  .tag.ugreen .tag-val { background:rgba(62,217,161,0.15); color:#8df5ce; }
+  .tag.baseus { border-color:rgba(245,166,35,0.3); }
+  .tag.baseus .tag-val { background:rgba(245,166,35,0.15); color:#ffd285; }
+  .tag.anker { border-color:rgba(38,121,255,0.3); }
+  .tag.anker .tag-val { background:rgba(38,121,255,0.15); color:#8bb4ff; }
+  .tag.alert { border-color:rgba(245,95,95,0.3); }
+  .tag.alert .tag-val { background:rgba(245,95,95,0.15); color:#ff9e9e; }
+
+  .tc-fact { font-size:12px; color:#c8c8d0; line-height:1.7; margin-bottom:14px; }
+  
+  /* 洞察强化框 */
+  .insight-box {
+    padding:14px; border-radius:4px 8px 8px 4px; border-left:3px solid;
+    background:rgba(255,255,255,0.025); margin-top:auto;
+  }
+  .insight-box.ugreen { border-left-color:#3ED9A1; }
+  .insight-box.baseus { border-left-color:#F5A623; }
+  .insight-box.anker { border-left-color:#2679FF; }
+  .insight-box.alert { border-left-color:#f55f5f; }
+  
+  .insight-label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px; display:block; }
+  .insight-box.ugreen .insight-label { color:#8df5ce; }
+  .insight-box.baseus .insight-label { color:#ffd285; }
+  .insight-box.anker .insight-label { color:#8bb4ff; }
+  .insight-box.alert .insight-label { color:#ff9e9e; }
+  
+  .insight-text { font-size:12px; color:#e8e8ed; line-height:1.6; font-weight:500; }
+  .insight-text strong { color:#fff; font-weight:700; border-bottom:1px solid rgba(255,255,255,0.2); padding-bottom:1px; }
+
+  /* ===== 独立推演流组件 (仅用于通栏卡片1) ===== */
+  .logic-flow { display:flex; gap:16px; margin-bottom:16px; align-items:stretch; }
+  .logic-step { flex:1; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:10px; padding:16px; position:relative; }
+  .step-num { font-family:'Sora',sans-serif; font-size:24px; font-weight:800; color:rgba(62,217,161,0.2); position:absolute; right:12px; top:8px; line-height:1; }
+  .step-head { font-size:13px; font-weight:700; color:#e8e8ed; margin-bottom:6px; }
+  .step-desc { font-size:11px; color:#a0a0a8; line-height:1.6; }
+
+</style>
+</head>
+<body>
+
+<div class="grid">
+
+  <!-- ====== CARD 1: UGREEN 通栏推演 (col-span-3) ====== -->
+  <div class="card card-c1">
+    <div>
+      <div class="label-sm fd">Event-Driven Strategy (June 2026)</div>
+      <div class="title-md">Ugreen 世界杯节点策略与异常数据归因</div>
+    </div>
+    <div class="sec-wrap">
+      
+      <!-- 三步逻辑流 -->
+      <div class="logic-flow">
+        <div class="logic-step">
+          <div class="step-num">01</div>
+          <div class="step-head">策略动作锚定</div>
+          <div class="step-desc">6月主推 "Game Day Kit"（含足球追踪器与便携充电宝），联动洛杉矶线下 FIFA Fan Festival 及全球体育媒体发稿。</div>
+        </div>
+        <div class="logic-step">
+          <div class="step-num">02</div>
+          <div class="step-head">渠道推力膨胀</div>
+          <div class="step-desc">大量外围体育媒体与 KOL 的联动分发，直接在归因模型中将 <strong>Affiliate / Referral</strong> 渠道流量占比快速推高至 <strong>28.07%</strong>。</div>
+        </div>
+        <div class="logic-step">
+          <div class="step-num">03</div>
+          <div class="step-head">泛流量稀释效应</div>
+          <div class="step-desc">被活动抽奖吸引的泛流量意图极度分散（探索欲强，刚需弱），分母急剧扩大，数学逻辑上必然导致跳出率高达 <strong>53.06%</strong>。</div>
+        </div>
+      </div>
+
+      <!-- 横向宽体洞察框 -->
+      <div class="insight-box ugreen" style="display:flex; flex-direction:column; justify-content:center;">
+        <span class="insight-label fd">动态时间线定论</span>
+        <div class="insight-text">
+          Ugreen 当前的高跳出率与外部依赖 <strong>可能并非底层转化能力或留存崩盘</strong>，而是当前时间节点执行"拓圈拉新"策略必然产生的数据镜像。脱离时间节点看绝对数据，极易得出错误的审计结论。
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====== CARD 2: BASEUS (col-span-1) ====== -->
+  <div class="card card-c2">
+    <div>
+      <div class="label-sm fd">Cost Efficiency</div>
+      <div class="title-md">Baseus 的 CPC 防御闭环</div>
+    </div>
+    <div class="sec-wrap">
+      <div class="single-cell">
+        <div>
+          <div class="tag-group">
+            <div class="tag baseus"><span class="tag-label">冰点成本</span><span class="tag-val">$0.20 CPC</span></div>
+          </div>
+          <div class="tc-fact">极低的品牌词拦截成本绝非孤立数据，它与 Baseus 高达 <strong>70.02%</strong> 的自有心智流量互为因果。</div>
+        </div>
+        
+        <div class="insight-box baseus">
+          <span class="insight-label fd">Buyer Insight</span>
+          <div class="insight-text">精准流量赋予落地页极高的系统质量得分，迫使广告引擎赋予其降维级的出价折扣。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CARD 3: ANKER (col-span-1) ====== -->
+  <div class="card card-c3">
+    <div>
+      <div class="label-sm fd">Retargeting Impact</div>
+      <div class="title-md">Anker 的大盘跳出率控制</div>
+    </div>
+    <div class="sec-wrap">
+      <div class="single-cell">
+        <div>
+          <div class="tag-group">
+            <div class="tag anker"><span class="tag-label">跳出率维稳</span><span class="tag-val">41.15%</span></div>
+          </div>
+          <div class="tc-fact">4.4M 泛流量能将跳出率压制在行业底线，高度依赖其后端 <strong>Criteo DPA</strong> 的站外全网高频唤回。</div>
+        </div>
+        
+        <div class="insight-box anker">
+          <span class="insight-label fd">Buyer Insight</span>
+          <div class="insight-text">底层工具不仅是拦截，更是<strong>Criteo DPA 抹平流量溢出损耗</strong>，用高相关度的站外再营销硬生生拉回了自然流失。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== CARD 4: BLINDSPOT 盲区提示 (col-span-1) ====== -->
+  <div class="card card-c4">
+    <div>
+      <div class="label-sm fd">Asset Format Blindspot</div>
+      <div class="title-md">800套素材的形态配比盲区</div>
+    </div>
+    <div class="sec-wrap">
+      <div class="single-cell">
+        <div>
+          <div class="tag-group">
+            <div class="tag alert"><span class="tag-label">规模误区</span><span class="tag-val">被隐藏的权重</span></div>
+          </div>
+          <div class="tc-fact">仅关注 Anker ~800 套的静态资产规模是不够的，必须进一步拆解其 <strong>短视频 (Reels) 与单图 (Carousel)</strong> 的形态配比。</div>
+        </div>
+        
+        <div class="insight-box alert">
+          <span class="insight-label fd">Strategic Alert</span>
+          <div class="insight-text">通过破解视频与图像的配比占比，可逆向推导其真实预算在漏斗<strong>拉新层 (TOFU) 与 收割层 (BOFU)</strong> 的分配权重。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="grid-column:1/-1;text-align:center;margin-top:8px;padding:12px 20px;background:rgba(255,255,255,0.02);border-radius:10px;border:1px solid rgba(255,255,255,0.05);">
+    <div style="font-size:11px;color:#c8c8d0;line-height:1.6;font-family:'DM Sans',sans-serif;"><strong style="color:#fff;">入职执行闭环：</strong>① 严守合规风控底线，杜绝主观臆断；② 持续监控竞品素材配比盲区，寻找低成本流量洼地；③ 依据前端流量精准度，匹配差异化留存策略，拒绝一刀切。</div>
+  </div>
+  <div style="grid-column:1/-1;font-size:8px;color:#555;font-family:'DM Sans',sans-serif;letter-spacing:0.03em;text-align:left;margin-top:4px;">*Data Source: Similarweb Pro, Wappalyzer. GEO: North America (US). Period: May-June 2026.</div>
+
+</div>
+
+</body>
+</html>

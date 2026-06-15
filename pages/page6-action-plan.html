@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>能力总结与岗位匹配 — 第6页</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei','DM Sans',sans-serif;
+    background:#161616;
+    color:#f5f5f7;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .grid {
+    display:grid;width:1200px;padding:28px;gap:6px;
+    grid-template-columns:repeat(4,1fr);
+    grid-template-rows:auto auto auto;
+    grid-template-areas:
+      "s1 s1 s2 s2"
+      "s3 s3 s4 s4"
+      "c  c  c  c";
+  }
+
+  .c-anker{color:#2679FF}.c-baseus{color:#F5A623}.c-ugreen{color:#3ED9A1}
+  .fs{font-family:'Sora',sans-serif}.fd{font-family:'DM Sans',sans-serif}
+
+  .card {
+    border-radius:20px;padding:24px 26px 20px;
+    display:flex;flex-direction:column;position:relative;overflow:hidden;
+  }
+  .card::before {
+    content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    border-radius:20px 20px 0 0;z-index:1;
+  }
+
+  .card-s1 { grid-area:s1;background:linear-gradient(160deg, #0e1b2e 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-s1::before { background:linear-gradient(90deg, #2679FF, #1a5cd4); }
+  .card-s2 { grid-area:s2;background:linear-gradient(160deg, #1e1e22 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-s2::before { background:linear-gradient(90deg, #F5A623, #D4891A); }
+  .card-s3 { grid-area:s3;background:linear-gradient(160deg, #14241e 0%, #1c1c20 55%, #1c1c20 100%); }
+  .card-s3::before { background:linear-gradient(90deg, #3ED9A1, #0ea26e); }
+  .card-s4 { grid-area:s4;background:linear-gradient(160deg, #1c1c20 0%, #1c1c20 100%); }
+  .card-s4::before { background:linear-gradient(90deg, #555, #333); }
+  .card-c  { grid-area:c;background:linear-gradient(160deg, #141e2e 0%, #1c1c20 60%, #1c1c20 100%); }
+  .card-c::before { background:linear-gradient(90deg, #2679FF, #F5A623, #3ED9A1); }
+
+  .card-s1::after, .card-s2::after, .card-s3::after, .card-s4::after, .card-c::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    border-radius:20px;border:1px solid rgba(255,255,255,0.04);
+  }
+  .card-s1::after { background:radial-gradient(ellipse at 60% 10%, rgba(38,121,255,0.06) 0%, transparent 55%); }
+  .card-s2::after { background:radial-gradient(ellipse at 60% 10%, rgba(245,166,35,0.05) 0%, transparent 55%); }
+  .card-s3::after { background:radial-gradient(ellipse at 60% 10%, rgba(62,217,161,0.05) 0%, transparent 55%); }
+  .card-s4::after { background:radial-gradient(ellipse at 30% 10%, rgba(255,255,255,0.03) 0%, transparent 55%); }
+  .card-c::after { background:radial-gradient(ellipse at 50% 10%, rgba(38,121,255,0.05) 0%, transparent 55%); }
+
+  .label-sm { font-size:9px;font-weight:600;color:#a0a0a8;text-transform:uppercase;letter-spacing:0.12em; }
+  .title-md { font-size:15px;font-weight:700;color:#e8e8ed;letter-spacing:0.02em;margin-top:2px; }
+
+  .pill { display:inline-flex;align-items:center;font-size:9px;font-weight:600;padding:2px 8px;border-radius:4px;font-family:'DM Sans',sans-serif;letter-spacing:0.03em;margin-top:8px;width:fit-content; }
+  .pill-b { background:rgba(38,121,255,0.1);color:#8bb4ff; }
+  .pill-g { background:rgba(245,166,35,0.1);color:#ffd285; }
+  .pill-e { background:rgba(62,217,161,0.1);color:#8df5ce; }
+  .pill-d { background:rgba(160,160,168,0.1);color:#c8c8d0; }
+
+  .items { display:flex;flex-direction:column;gap:8px;margin-top:10px; }
+  .item { display:flex;gap:8px;align-items:baseline;font-size:11px;color:#c8c8d0;line-height:1.5; }
+  .dot { font-size:10px;flex-shrink:0;line-height:1.5; }
+
+  .simple { font-size:12px;color:#c8c8d0;line-height:1.65;margin-top:10px; }
+
+  .self { font-size:13px;color:#e8e8ed;line-height:1.7;text-align:center;padding:0 40px; }
+  .self strong { color:#fff;font-weight:700; }
+
+  .ft { grid-column:1/-1;font-size:8px;color:#555;font-family:'DM Sans',sans-serif;letter-spacing:0.03em;margin-top:2px; }
+</style>
+</head>
+<body>
+<div class="grid">
+
+  <!-- 技能 1: 数据拆解 -->
+  <div class="card card-s1">
+    <div>
+      <div class="label-sm fd">Capability 1</div>
+      <div class="title-md">独立完成竞品数据获取与归因分析</div>
+      <span class="pill pill-b">Page 2 + Page 5 体现</span>
+    </div>
+    <div class="simple">通过 Similarweb、Meta Ads Library、Wappalyzer 等第三方工具，独立完成三品牌的流量规模、渠道结构与跳出率数据的系统性抓取与横向对比。能够在数据中发现异常值（如 Ugreen 28% 联盟依赖），并主动追溯异常背后的时间节点与业务逻辑。</div>
+  </div>
+
+  <!-- 技能 2: 工具链 -->
+  <div class="card card-s2">
+    <div>
+      <div class="label-sm fd">Capability 2</div>
+      <div class="title-md">理解广告投放全链路的前后端关系</div>
+      <span class="pill pill-g">Page 3 + Page 4 体现</span>
+    </div>
+    <div class="simple">不止于前端素材分析，能够通过 Wappalyzer 逆向拆解竞品的后端工具挂载（Criteo DPA / PushOwl / Claspo / Ptengine）。理解「前端素材 → 后端承接工具 → 最终转化效率」之间的因果链条，这对于全漏斗投放岗位是重要的底层认知。</div>
+  </div>
+
+  <!-- 技能 3: 合规 -->
+  <div class="card card-s3">
+    <div>
+      <div class="label-sm fd">Capability 3</div>
+      <div class="title-md">具备广告合规与出价风控意识</div>
+      <span class="pill pill-e">Page 3 体现</span>
+    </div>
+    <div class="simple">在报告中主动标注了 Meta 广告的字符截断风险（≤3 Lines / &lt;40 Chars / Shop Now），并补充了 A/B 测试的预算止损规则。这表明初步具备「花出去的每一分钱都值得验证」数据从业者的基本纪律。</div>
+  </div>
+
+  <!-- 技能 4: 学习力 -->
+  <div class="card card-s4">
+    <div>
+      <div class="label-sm fd">Capability 4</div>
+      <div class="title-md">结合 AI 工具完成从零到一的系统性产出</div>
+      <span class="pill pill-d">全篇体现</span>
+    </div>
+    <div class="simple">本报告结合主流 AI 工具辅助完成数据梳理、文案撰写与代码排版，从竞品调研到完整作品集交付，全程独立推进。在 0 经验的前提下，能够主动借助 AI 等新兴工具提升学习效率与交付质量，这本身就是广告行业最需要的能力——快速拥抱新工具、将效率转化为竞争力。</div>
+  </div>
+
+  <!-- 自我定位 -->
+  <div class="card card-c">
+    <div style="text-align:center;padding-top:8px;">
+      <div class="label-sm fd">Self-Positioning</div>
+    </div>
+    <div class="self" style="margin-top:10px;">
+      我是一名<strong>0 经验的应届毕业生</strong>，不具备账户实操的岗位经验。<br>
+      但这份作品集证明了我具备<strong>三项可迁移到岗位上的基础能力</strong>：<br>
+      ① 系统性地利用公开工具获取与交叉验证竞品数据；<br>
+      ② 将原始数据转化为有因果逻辑的商业分析；<br>
+      ③ 在前端素材与后端工具之间建立链路视角。<br><br>
+      我相信这些能力能让我<strong>在入职后以更短的学习曲线进入执行状态</strong>，<br>
+      而我愿意从最底层的建计划、盯数据做起。
+    </div>
+  </div>
+
+  <div class="ft fd">*Data Source: Similarweb Pro, Meta Ads Library, Wappalyzer. GEO: North America (US). Device: Desktop & Mobile. Period: May-June 2026.</div>
+
+</div>
+</body>
+</html>

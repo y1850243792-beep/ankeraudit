@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北美 3C 赛道广告投放与竞争基准审计</title>
+<link rel="stylesheet" href="core_engine.css">
+<link rel="stylesheet" href="components.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Sora:wght@400;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+  :root {
+    --bg: #161616;
+    --card: #1c1c20;
+    --text: #f5f5f7;
+    --muted: #a0a0a8;
+    --accent: #2679FF;
+    --r: 16px;
+  }
+
+  body { font-family: 'Noto Sans SC','PingFang SC','Microsoft YaHei','DM Sans',sans-serif; }
+  .fs { font-family: 'Sora',sans-serif; }
+  .fd { font-family: 'DM Sans',sans-serif; }
+  .c-anker { color:#2679FF; }
+  .c-baseus { color:#F5A623; }
+  .c-ugreen { color:#3ED9A1; }
+  .c-red { color:#f55f5f; }
+  .b-anker { background:#2679FF; }
+  .b-baseus { background:#F5A623; }
+  .b-ugreen { background:#3ED9A1; }
+
+  .slide .frame {
+    background: linear-gradient(160deg, #161616 0%, #1c1c20 50%, #1c1c20 100%);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .slide .frame > .in {
+    display: flex; flex-direction: column;
+    width: 100%; height: 100%;
+  }
+
+  /* Cover slide special styling */
+  .cover-hero {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex: 1; text-align: center; gap: 16px;
+  }
+  .cover-title {
+    font-size: 42px; font-weight: 700; color: #f5f5f7;
+    letter-spacing: 0.04em; line-height: 1.3;
+  }
+  .cover-sub {
+    font-size: 14px; color: #b0b0b8; letter-spacing: 0.05em; margin-top: 4px;
+  }
+  .cover-meta {
+    font-size: 10px; color: #aaa; letter-spacing: 0.06em;
+  }
+  .cover-divider {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, #2679FF, #F5A623, #3ED9A1);
+    border-radius: 1px;
+  }
+  .cover-author {
+    font-size: 18px; color: #e8e8ed; font-weight: 600;
+    letter-spacing: 0.06em; margin-top: 8px;
+  }
+
+  /* Agenda grid on cover */
+  .agenda-grid {
+    display: flex; gap: 8px; margin-top: 8px;
+  }
+  .agenda-card {
+    flex: 1; padding: 14px 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .agenda-num {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; font-family: 'DM Sans',sans-serif;
+  }
+  .agenda-num-1 { background: rgba(38,121,255,0.15); color: #2679FF; }
+  .agenda-num-2 { background: rgba(245,166,35,0.15); color: #F5A623; }
+  .agenda-num-3 { background: rgba(62,217,161,0.15); color: #3ED9A1; }
+  .agenda-num-4 { background: rgba(245,95,95,0.15); color: #f55f5f; }
+  .agenda-title {
+    font-size: 13px; font-weight: 600; color: #e8e8ed; letter-spacing: 0.02em;
+  }
+  .agenda-desc {
+    font-size: 10px; color: #888; line-height: 1.4;
+  }
+
+  /* Content page header */
+  .page-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 6px;
+  }
+  .page-label {
+    font-size: 9px; font-weight: 600; color: #888;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .page-title {
+    font-size: 20px; font-weight: 700; color: #e8e8ed;
+    letter-spacing: 0.02em; margin-top: 2px;
+  }
+
+  /* Bar chart for page 2 */
+  .bar-row {
+    display: flex; align-items: flex-end; justify-content: space-around;
+    flex: 1; padding: 8px 40px 0;
+  }
+  .bar-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .bar-col {
+    width: 52px; border-radius: 6px 6px 0 0;
+  }
+  .bar-col-a {
+    height: 170px;
+    background: linear-gradient(180deg, #2679FF, #1a5cd4);
+    box-shadow: 0 0 20px rgba(38,121,255,0.35);
+  }
+  .bar-col-b {
+    height: 38px;
+    background: linear-gradient(180deg, #F5A623, #D4891A);
+  }
+  .bar-col-u {
+    height: 34px;
+    background: linear-gradient(180deg, #3ED9A1, #0ea26e);
+  }
+  .bar-name {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.05em;
+  }
+  .bar-val {
+    font-size: 12px; font-weight: 700;
+  }
+
+  /* Metric cards for page 2 */
+  .metric-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px; margin-top: 8px;
+  }
+  .metric-cell {
+    background: rgba(255,255,255,0.015); border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.05); padding: 12px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .mc-brand {
+    font-size: 10px; font-weight: 600; font-family: 'DM Sans',sans-serif;
+  }
+  .mc-val {
+    font-size: 18px; font-weight: 800;
+  }
+  .mc-note {
+    font-size: 9px; color: #888; line-height: 1.3;
+  }
+
+  /* Insight box */
+  .insight {
+    padding: 10px 14px; border-left: 3px solid;
+    background: rgba(255,255,255,0.02); border-radius: 4px 8px 8px 4px;
+    margin-top: 8px; font-size: 11px; color: #c8c8d0; line-height: 1.5;
+  }
+  .insight-blue { border-left-color: #2679FF; }
+  .insight-gold { border-left-color: #F5A623; }
+  .insight-green { border-left-color: #3ED9A1; }
+  .insight strong { color: #fff; font-weight: 600; }
+
+  /* Tag pill */
+  .tag-pill {
+    display: inline-flex; align-items: center; border-radius: 6px;
+    overflow: hidden; font-size: 9px; font-weight: 700;
+    font-family: 'DM Sans',sans-serif; border: 1px solid;
+  }
+  .tag-pill .tl { padding: 3px 6px; background: rgba(255,255,255,0.04); color: #c8c8d0; }
+  .tag-pill .tv { padding: 3px 6px; }
+  .tp-anker { border-color: rgba(38,121,255,0.3); }
+  .tp-anker .tv { background: rgba(38,121,255,0.12); color: #8bb4ff; }
+  .tp-baseus { border-color: rgba(245,166,35,0.3); }
+  .tp-baseus .tv { background: rgba(245,166,35,0.12); color: #ffd285; }
+  .tp-ugreen { border-color: rgba(62,217,161,0.3); }
+  .tp-ugreen .tv { background: rgba(62,217,161,0.12); color: #8df5ce; }
+
+  /* Page 3 specific */
+  .glass-card-p3 {
+    background: rgba(255,255,255,0.015); border-radius: 12px;
+    padding: 16px 18px; border: 1px solid rgba(255,255,255,0.04);
+    display: flex; flex-direction: column; gap: 8px;
+    height: 100%;
+  }
+  .p3-title {
+    font-size: 16px; font-weight: 800; letter-spacing: -0.01em;
+  }
+
+  /* Page 4 specific */
+  .vs-panel-wrap {
+    display: flex; gap: 12px; position: relative; margin-top: 16px;
+  }
+  .vs-panel {
+    flex: 1; padding: 16px; border-radius: 10px;
+    background: rgba(255,255,255,0.02); border-top: 2px solid;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .vs-panel.p-anchor { border-top-color: #2679FF; }
+  .vs-panel.p-rival { border-top-color: #F5A623; }
+  .vs-badge {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    background: #1c1c20; color: #a0a0a8; font-size: 11px; font-weight: 800;
+    font-family: 'Sora',sans-serif; padding: 5px 8px; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08); z-index: 2;
+  }
+  .vs-head { font-size: 13px; font-weight: 700; color: #f5f5f7; }
+  .vs-desc { font-size: 11px; color: #a0a0a8; line-height: 1.5; }
+
+  /* Page 5 specific */
+  .logic-row {
+    display: flex; gap: 12px; margin-bottom: 12px;
+  }
+  .logic-step {
+    flex: 1; padding: 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+  }
+  .step-badge {
+    position: absolute; right: 10px; top: 8px;
+    font-size: 20px; font-weight: 800; font-family: 'Sora',sans-serif;
+    color: rgba(62,217,161,0.2); line-height: 1;
+  }
+  .step-head { font-size: 12px; font-weight: 700; color: #e8e8ed; margin-bottom: 4px; }
+  .step-desc { font-size: 10px; color: #a0a0a8; line-height: 1.5; }
+
+  .data-footnote {
+    position: absolute; bottom: 6px; left: 24px;
+    font-size: 8px; color: #555; letter-spacing: 0.03em;
+    font-family: 'DM Sans',sans-serif;
+  }
+  .glass-edge {
+    position: relative;
+  }
+  .glass-edge::after {
+    content:'';position:absolute;inset:0;pointer-events:none;
+    border-radius:inherit;border:1px solid rgba(255,255,255,0.04);
+  }
+</style>
+</head>
+<body class="dark-mode">
+<main class="deck" id="deck">
+
+  <!-- ========== SLIDE 1: COVER ========== -->
+  <section class="slide active" data-chapter="封面">
+    <div class="frame">
+      <div class="in" style="justify-content:center;align-items:center;text-align:center;gap:10px;">
+        <div class="cover-hero">
+          <div class="cover-title">北美 3C 赛道广告投放与竞争基准审计</div>
+          <div class="cover-divider"></div>
+          <div class="cover-meta">基于 Similarweb、Meta Ads Library 与 Wappalyzer · June 2026</div>
+          <div class="cover-author">颜忠毅</div>
+        </div>
+        <div class="agenda-grid" style="margin-top:16px;width:100%;">
+          <div class="agenda-card">
+            <div class="agenda-num agenda-num-1">01</div>
+            <div class="agenda-title">流量大盘与渠道归因</div>
+            <div class="agenda-desc">三品牌横向对标 · 心智壁垒与外部依赖</div>
+          </div>
+          <div class="agenda-card">
+            <div class="agenda-num agenda-num-2">02</div>
+            <div class="agenda-title">前端资产与合规风控</div>
+            <div class="agenda-desc">A/B测试框架 · Meta 广告合规矩阵</div>
+          </div>
+          <div class="agenda-card">
+            <div class="agenda-num agenda-num-3">03</div>
+            <div class="agenda-title">后端技术栈链路审计</div>
+            <div class="agenda-desc">站外再营销 vs 站内转化留存 · Wappalyzer拆解</div>
+          </div>
+          <div class="agenda-card">
+            <div class="agenda-num agenda-num-4">04</div>
+            <div class="agenda-title">节点策略交叉印证</div>
+            <div class="agenda-desc">世界杯节点归因 · CPC防御与素材盲区</div>
+          </div>
+        </div>
+      </div>
+      <div class="page-num">1 / 5</div>
+      <div class="data-footnote fd">*Data Source: Similarweb Pro, Meta Ads Library, Wappalyzer. GEO: North America (US). Device: Desktop & Mobile. Period: May-June 2026.</div>
+    </div>
+    <aside class="notes">
+      <strong>讲解要点：</strong>
+      - 本次审计覆盖 Anker、Baseus、Ugreen 三家北美 3C 主站
+      - 数据源：Similarweb 流量分析 + Wappalyzer 技术栈扫描
+      - 四维度：流量结构、前端资产、后端工具链、节点策略交叉印证
+      <strong>时长：</strong>1-2 分钟
+    </aside>
+  </section>
+
+  <!-- ========== SLIDE 2: 流量大盘与结构归因 ========== -->
+  <section class="slide" data-chapter="流量归因">
+    <div class="frame">
+      <div class="in" style="display:flex;flex-direction:column;">
+        <div class="page-header">
+          <div>
+            <div class="page-label fd">Traffic &amp; Channel Attribution</div>
+            <div class="page-title">流量大盘与渠道结构归因</div>
+          </div>
+        </div>
+        <div id="chart-traffic" style="width:100%;height:200px;"></div>
+        <div class="metric-grid">
+          <div class="metric-cell">
+            <span class="mc-brand c-baseus fd">Baseus · 自有流量</span>
+            <span class="mc-val c-baseus fs">70.02%</span>
+            <span class="mc-note">47.68% 搜索 + 22.34% 直接，心智垂直度极高</span>
+          </div>
+          <div class="metric-cell">
+            <span class="mc-brand c-anker fd">Anker · 品牌与大盘平衡</span>
+            <span class="mc-val c-anker fs">64.51%</span>
+            <span class="mc-note">400万级流量大盘，免费心智极度平衡</span>
+          </div>
+          <div class="metric-cell">
+            <span class="mc-brand c-ugreen fd">Ugreen · 外部输血依赖</span>
+            <span class="mc-val c-ugreen fs">28.07%</span>
+            <span class="mc-note">联盟+推荐占比，外部渠道高度依赖</span>
+          </div>
+        </div>
+        <div class="insight insight-blue">
+          <strong>Anker</strong> $0.30 极低 CPC · <strong>Baseus</strong> 41.40% 低跳出率 · <strong>Ugreen</strong> 53.06% 泛流量稀释
+        </div>
+        <div style="text-align:center;margin-top:6px;font-size:13px;color:#e8e8ed;font-weight:600;">Anker 靠大盘吃算法，Baseus 靠精准吃心智。</div>
+      </div>
+      <div class="page-num">2 / 5</div>
+      <div class="data-footnote fd">*Data Source: Similarweb Pro. GEO: North America (US). Period: May 2026.</div>
+    </div>
+    <aside class="notes">
+      <strong>讲解要点：</strong>
+      - Anker 以 4.4M 月均访问量领先，柱状图差距一目了然
+      - Baseus 虽流量小但自有心智占比最高（70%），精准度极高
+      - Ugreen 28% 流量依赖外部渠道，跳出率 53% 是核心风险点
+      - Anker 的极低 CPC（$0.30）证明品牌词的绝对防御优势
+      <strong>时长：</strong>2-3 分钟
+    </aside>
+  </section>
+
+  <!-- ========== SLIDE 3: 前端资产与合规 ========== -->
+  <section class="slide" data-chapter="资产与合规">
+    <div class="frame">
+      <div class="in" style="display:flex;flex-direction:column;">
+        <div class="page-header">
+          <div>
+            <div class="page-label fd">Meta Ads &amp; A/B Testing</div>
+            <div class="page-title">前端资产 A/B 测试框架与合规风控</div>
+          </div>
+        </div>
+        <div class="grid2" style="margin-top:8px;">
+          <div class="glass-card-p3" style="border-left:3px solid #a855f7;">
+            <span class="p3-title" style="color:#c4b5fd;">A组：痛点感知 · 假设性测试框架</span>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <div class="tag-pill tp-baseus"><span class="tl">核心场景</span><span class="tv">旧线破损·发热痛点</span></div>
+            </div>
+            <div style="font-size:11px;color:#c8c8d0;line-height:1.5;">Visual 聚焦强痛点写实场景，核心推导 Care Mode 温控芯片技术，向泛用户传递绝对安全屏障，测试 CVR 底线。</div>
+          </div>
+          <div class="glass-card-p3" style="border-left:3px solid #06b6d4;">
+            <span class="p3-title" style="color:#67e8f9;">B组：极客共鸣 · 假设性测试框架</span>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <div class="tag-pill tp-anker"><span class="tl">核心场景</span><span class="tv">数显屏·交互流光</span></div>
+            </div>
+            <div style="font-size:11px;color:#c8c8d0;line-height:1.5;">视觉特写充电头插入瞬间的科技美学微观动态，面向极客人群打出桌面数码交互价值，拉高首发期 CTR 峰值。</div>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:8px;">
+          <div class="metric-cell" style="border-top:2px solid #f55f5f;">
+            <span class="mc-brand c-red fd">Primary Text</span>
+            <span class="mc-val c-red fs">≤ 3 Lines</span>
+            <span class="mc-note">规避 "See More" 折叠，保障卖点前置曝光</span>
+          </div>
+          <div class="metric-cell" style="border-top:2px solid #f55f5f;">
+            <span class="mc-brand c-red fd">Headline</span>
+            <span class="mc-val c-red fs">&lt; 40 Chars</span>
+            <span class="mc-note">约束字符边界，规避 Truncation 语义流失</span>
+          </div>
+          <div class="metric-cell" style="border-top:2px solid #f55f5f;">
+            <span class="mc-brand c-red fd">CTA Button</span>
+            <span class="mc-val c-red fs">Shop Now</span>
+            <span class="mc-note">聚焦强转化，减少 BOF 软导向损耗</span>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:6px;font-size:10px;color:#888;font-family:'DM Sans',sans-serif;">测试风控底线：单组日预算 $150，若 CTR &lt; 1.2% 或 CPA &gt; $35，即刻关停计划并归档素材。</div>
+      </div>
+      <div class="page-num">3 / 5</div>
+      <div class="data-footnote fd">*Data Source: Meta Ads Library. GEO: North America (US). Period: June 2026.</div>
+    </div>
+    <aside class="notes">
+      <strong>讲解要点：</strong>
+      - A组用痛点写实测试 CVR 底线，B组用极客共鸣拉高 CTR
+      - Meta 广告合规三要素：正文≤3行、标题<40字符、CTA 锁定 Shop Now
+      - 所有规范体现对移动端 Truncation 的防御意识
+      <strong>时长：</strong>2-3 分钟
+    </aside>
+  </section>
+
+  <!-- ========== SLIDE 4: 后端技术栈 ========== -->
+  <section class="slide" data-chapter="技术栈审计">
+    <div class="frame">
+      <div class="in" style="display:flex;flex-direction:column;">
+        <div class="page-header">
+          <div>
+            <div class="page-label fd">Wappalyzer Tech Stack Audit</div>
+            <div class="page-title">后端再营销技术栈链路审计</div>
+          </div>
+        </div>
+        <div class="grid3" style="margin-top:8px;">
+          <div class="glass-card-p3" style="border-left:3px solid #2679FF;">
+            <span class="p3-title c-anker">Anker 站外再营销</span>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <div class="tag-pill tp-anker"><span class="tl">工具</span><span class="tv">Criteo DPA</span></div>
+              <div class="tag-pill tp-anker"><span class="tl">工具</span><span class="tv">Taboola</span></div>
+            </div>
+            <div style="font-size:10px;color:#c8c8d0;line-height:1.5;">4.4M 大盘流量基座，站外多触点对弃单实施全网重定向追尾。维持高阶品牌调性，不依赖站内弹窗。</div>
+          </div>
+          <div class="glass-card-p3" style="border-left:3px solid #F5A623;">
+            <span class="p3-title c-baseus">Baseus 站内留存</span>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <div class="tag-pill tp-baseus"><span class="tl">工具</span><span class="tv">PushOwl</span></div>
+              <div class="tag-pill tp-baseus"><span class="tl">工具</span><span class="tv">Claspo</span></div>
+            </div>
+            <div style="font-size:10px;color:#c8c8d0;line-height:1.5;">小盘精准流量（70%自有），站内强拦截留存策略，跳出率锁定 41.40%，最大化挖掘每次进站价值。</div>
+          </div>
+          <div class="glass-card-p3" style="border-left:3px solid #3ED9A1;">
+            <span class="p3-title c-ugreen">Ugreen 精细微调</span>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <div class="tag-pill tp-ugreen"><span class="tl">工具</span><span class="tv">Ptengine</span></div>
+            </div>
+            <div style="font-size:10px;color:#c8c8d0;line-height:1.5;">外部依赖 28%，泛流量跳出率 53%。向内收缩聚焦热力图与 A/B 测试的精细化防漏。</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#a0a0a8;text-align:center;margin-top:8px;">工具的选用并非随机，本质上是<strong style="color:#fff;">流量结构的镜像反映</strong></div>
+        <div class="vs-panel-wrap" style="margin-top:8px;">
+          <div class="vs-badge">VS</div>
+          <div class="vs-panel p-anchor">
+            <div class="vs-head">规模势能 (Anker)</div>
+            <div class="vs-desc">流量盘口够大，容错率高，主打大开大合的站外宏观重定向。</div>
+          </div>
+          <div class="vs-panel p-rival">
+            <div class="vs-head">规模瓶颈 (友商)</div>
+            <div class="vs-desc">流量珍贵或受制于渠道，重仓即时转化，挖掘进站即时效益。</div>
+          </div>
+        </div>
+      </div>
+      <div class="page-num">4 / 5</div>
+      <div class="data-footnote fd">*Data Source: Wappalyzer. GEO: North America (US). Period: June 2026.</div>
+    </div>
+    <aside class="notes">
+      <strong>讲解要点：</strong>
+      - 三方工具选型完全由流量结构决定：大盘追尾 vs 小盘拦截 vs 依赖微调
+      - Anker 的 Criteo DPA 是典型的站外重定向，不损伤站内体验
+      - Baseus 用 PushOwl+Claspo 实施强拦截，与 41% 低跳出率形成因果闭环
+      - Ugreen 受制于外部依赖，工具链只能向内收缩做防漏
+      <strong>时长：</strong>2-3 分钟
+    </aside>
+  </section>
+
+  <!-- ========== SLIDE 5: 交叉印证 ========== -->
+  <section class="slide" data-chapter="交叉印证">
+    <div class="frame">
+      <div class="in" style="display:flex;flex-direction:column;">
+        <div class="page-header">
+          <div>
+            <div class="page-label fd">Event-Driven Strategy &amp; Cross-Check</div>
+            <div class="page-title">节点策略与数据交叉印证</div>
+          </div>
+        </div>
+        <div class="logic-row">
+          <div class="logic-step">
+            <div class="step-badge">01</div>
+            <div class="step-head">策略动作锚定</div>
+            <div class="step-desc">6月主推 "Game Day Kit"，联动洛杉矶线下 FIFA Fan Festival 及全球体育媒体发稿。</div>
+          </div>
+          <div class="logic-step">
+            <div class="step-badge">02</div>
+            <div class="step-head">渠道推力膨胀</div>
+            <div class="step-desc">体育媒体与 KOL 分发，快速推高 Affiliate/Referral 至 28.07%。</div>
+          </div>
+          <div class="logic-step">
+            <div class="step-badge">03</div>
+            <div class="step-head">泛流量稀释</div>
+            <div class="step-desc">活动抽奖吸引泛流量，分母扩大必然导致跳出率高达 53.06%。</div>
+          </div>
+        </div>
+        <div class="insight insight-green">
+          Ugreen 当前高跳出率与外部依赖 <strong>可能并非底层转化能力崩盘</strong>，而是当前时间节点执行拓圈拉新策略必然产生的数据镜像。脱离时间节点看绝对数据，极易得出错误的审计结论。
+        </div>
+        <div class="grid3" style="margin-top:8px;">
+          <div class="metric-cell" style="border-top:2px solid #F5A623;">
+            <span class="mc-brand c-baseus fd">Baseus 防御闭环</span>
+            <span class="mc-val c-baseus fs">$0.20 CPC</span>
+            <span class="mc-note">70% 自有心智 → 高系统质量得分 → 降维出价折扣</span>
+          </div>
+          <div class="metric-cell" style="border-top:2px solid #2679FF;">
+            <span class="mc-brand c-anker fd">Anker 大盘跳出率控制</span>
+            <span class="mc-val c-anker fs">41.15% Bounce</span>
+            <span class="mc-note">Criteo DPA 站外唤回硬生生拉回自然流失</span>
+          </div>
+          <div class="metric-cell" style="border-top:2px solid #f55f5f;">
+            <span class="mc-brand c-red fd">素材配比盲区</span>
+            <span class="mc-val c-red fs">~800 套</span>
+            <span class="mc-note">需拆解 Reels/Carousel 配比，逆向推导 TOF/BOF 预算权重</span>
+          </div>
+        </div>
+        <div class="insight insight-green" style="margin-top:6px;">
+          <strong>入职执行闭环：</strong>① 严守合规风控底线，杜绝主观臆断；② 持续监控竞品素材配比盲区，寻找低成本流量洼地；③ 依据前端流量精准度，匹配差异化留存策略，拒绝一刀切。
+        </div>
+      </div>
+      <div class="page-num">5 / 5</div>
+      <div class="data-footnote fd">*Data Source: Similarweb Pro, Wappalyzer. GEO: North America (US). Period: May-June 2026.</div>
+    </div>
+    <aside class="notes">
+      <strong>讲解要点：</strong>
+      - Ugreen 数据异常 ≠ 能力问题，而是世界杯节点拓圈策略的必然代价
+      - Baseus $0.20 冰点 CPC 来自高质量得分，与 70% 自有心智形成正向飞轮
+      - Anker ~800 套素材的形态配比是关键盲区，视频/图占比决定了真实 TOF/BOF 预算分配
+      <strong>时长：</strong>2-3 分钟
+    </aside>
+  </section>
+
+</main>
+<script src="core_engine.js"></script>
+<script>
+  // Slide 2 — Traffic Bar Chart
+  (function() {
+    var dom = document.getElementById('chart-traffic');
+    if (!dom) return;
+    var chart = echarts.init(dom);
+    chart.setOption({
+      backgroundColor: 'transparent',
+      grid: { top: 10, right: 40, bottom: 30, left: 50 },
+      xAxis: {
+        type: 'category',
+        data: ['Anker', 'Baseus', 'Ugreen'],
+        axisLabel: { color: '#a0a0a8', fontSize: 12, fontFamily: 'DM Sans' },
+        axisLine: { lineStyle: { color: 'rgba(255,255,255,0.06)' } },
+        axisTick: { show: false }
+      },
+      yAxis: {
+        type: 'value',
+        name: '月访问量',
+        nameTextStyle: { color: '#a0a0a8', fontSize: 10 },
+        axisLabel: { color: '#a0a0a8', fontSize: 10, formatter: '{value}K' },
+        splitLine: { lineStyle: { color: 'rgba(255,255,255,0.04)', type: 'dashed' } }
+      },
+      series: [{
+        type: 'bar',
+        barWidth: 52,
+        itemStyle: { borderRadius: [6, 6, 0, 0] },
+        label: { show: true, position: 'top', color: '#f5f5f7', fontSize: 13, fontWeight: 700, fontFamily: 'Sora' },
+        data: [
+          { value: 4400, itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#2679FF'},{offset:1,color:'#1a5cd4'}]) } },
+          { value: 593.5, itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#F5A623'},{offset:1,color:'#D4891A'}]) } },
+          { value: 535, itemStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1,[{offset:0,color:'#3ED9A1'},{offset:1,color:'#0ea26e'}]) } }
+        ]
+      }]
+    });
+    window.addEventListener('resize', function() { chart.resize(); });
+  })();
+</script>
+</body>
+</html>
