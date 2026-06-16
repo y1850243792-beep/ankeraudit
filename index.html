@@ -4,174 +4,180 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>北美 3C 赛道广告投放审计 | Anker 全球广告专员岗位申请 · 颜忠毅</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: 'Noto Sans SC', 'DM Sans', sans-serif;
-    background: #08080a;
-    color: #eaeaec;
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    -webkit-font-smoothing: antialiased;
+  html, body {
+    height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    background: #08080a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
-  .bg-orb {
-    position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
-  }
-  .bg-orb-1 {
-    width: 700px; height: 700px;
-    top: -25%; right: -15%;
-    background: radial-gradient(circle, rgba(38,121,255,0.07) 0%, transparent 70%);
-    filter: blur(160px);
-  }
-  .bg-orb-2 {
-    width: 500px; height: 500px;
-    bottom: -20%; left: -10%;
-    background: radial-gradient(circle, rgba(168,85,247,0.04) 0%, transparent 70%);
-    filter: blur(140px);
+  .scroll-container {
+    height: 100vh;
+    width: 100vw;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
   }
 
-  .container {
-    position: relative; z-index: 1;
-    text-align: center;
-    padding: 40px 24px;
-    max-width: 540px;
+  .page {
+    height: 100vh;
+    width: 100vw;
+    scroll-snap-align: start;
+    position: relative;
+    background: #08080a;
   }
 
-  .badge {
-    display: inline-block;
-    font-family: 'Sora', sans-serif;
-    font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.14em;
-    color: #4dabf7;
-    border: 1px solid rgba(38,121,255,0.18);
-    padding: 5px 16px; border-radius: 20px;
-    margin-bottom: 28px;
-    background: rgba(38,121,255,0.04);
-  }
-
-  h1 {
-    font-family: 'Sora', 'Noto Sans SC', sans-serif;
-    font-size: 30px; font-weight: 800;
-    letter-spacing: -0.03em; line-height: 1.2;
-    margin-bottom: 12px;
-  }
-  h1 .accent {
-    background: linear-gradient(135deg, #4dabf7, #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .sub {
-    font-size: 14px; color: #666;
-    margin-bottom: 16px;
-    line-height: 1.6;
-  }
-
-  .meta {
-    display: flex; justify-content: center; gap: 20px;
-    margin-bottom: 36px;
-    flex-wrap: wrap;
-  }
-  .meta span {
-    font-size: 11px; color: #555;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .meta span::before {
-    content: ''; width: 5px; height: 5px; border-radius: 50%;
-  }
-  .meta .m1::before { background: #2679FF; }
-  .meta .m2::before { background: #F5A623; }
-  .meta .m3::before { background: #3ED9A1; }
-
-  .start-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 16px 36px;
-    border-radius: 28px;
-    border: 1px solid rgba(38,121,255,0.20);
-    background: rgba(38,121,255,0.06);
-    color: #4dabf7;
-    font-family: 'Sora', sans-serif;
-    font-size: 15px; font-weight: 700;
-    text-decoration: none;
-    transition: background 0.3s, border-color 0.3s, transform 0.2s;
-    letter-spacing: -0.01em;
-  }
-  .start-btn:hover {
-    background: rgba(38,121,255,0.10);
-    border-color: rgba(38,121,255,0.30);
-    transform: translateY(-1px);
-  }
-  .start-btn svg { width: 18px; height: 18px; }
-
-  .pages-grid {
-    display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 8px; margin-top: 28px;
+  .page iframe {
     width: 100%;
-  }
-  .pages-grid a {
-    font-size: 12px; color: #777; text-decoration: none;
-    padding: 12px 10px; border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.05);
-    background: rgba(255,255,255,0.015);
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-    text-align: center;
-  }
-  .pages-grid a:hover {
-    color: #ccc;
-    border-color: rgba(255,255,255,0.10);
-    background: rgba(255,255,255,0.03);
+    height: 100%;
+    border: none;
+    display: block;
   }
 
-  footer {
-    margin-top: 36px;
-    font-size: 11px; color: #333;
+  /* Navigation dots */
+  .nav-dots {
+    position: fixed;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  footer a { color: #555; text-decoration: none; }
-  footer a:hover { color: #888; }
+  .nav-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    padding: 0;
+  }
+  .nav-dot:hover { background: rgba(255,255,255,0.35); transform: scale(1.3); }
+  .nav-dot.active { background: #4dabf7; box-shadow: 0 0 8px rgba(77,171,247,0.4); }
+
+  /* Scroll hint at bottom of page 1 */
+  .scroll-hint {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 1;
+    transition: opacity 0.5s;
+    pointer-events: none;
+  }
+  .scroll-hint.hidden { opacity: 0; }
+  .scroll-hint span {
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .scroll-hint .chevron {
+    width: 14px; height: 14px;
+    border-right: 1.5px solid rgba(255,255,255,0.2);
+    border-bottom: 1.5px solid rgba(255,255,255,0.2);
+    transform: rotate(45deg);
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(4px); }
+  }
+
+  @media (max-width: 768px) {
+    .nav-dots { right: 8px; gap: 8px; }
+    .nav-dot { width: 6px; height: 6px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="bg-orb bg-orb-1"></div>
-<div class="bg-orb bg-orb-2"></div>
-
-<div class="container">
-  <div class="badge">Portfolio · 2026</div>
-  <h1>北美 3C 赛道<br><span class="accent">广告投放竞争基准审计</span></h1>
-  <p class="sub">
-    颜忠毅 · 申请 Anker 全球广告专员岗位
-  </p>
-  <div class="meta">
-    <span class="m1">Anker</span>
-    <span class="m2">Baseus</span>
-    <span class="m3">Ugreen</span>
-  </div>
-
-  <a href="pages/page1-cover.html" class="start-btn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    开始浏览报告
-  </a>
-
-  <div class="pages-grid">
-    <a href="pages/page1-cover.html">01 · 封面</a>
-    <a href="pages/page2-traffic-channel.html">02 · 流量大盘</a>
-    <a href="pages/page3-ad-assets-abtest.html">03 · A/B 测试</a>
-    <a href="pages/page4-tech-stack.html">04 · 技术栈</a>
-    <a href="pages/page5-campaign-crosscheck.html">05 · 交叉验证</a>
-    <a href="pages/page6-action-plan.html">06 · 能力总结</a>
-  </div>
-
-  <footer>
-    GitHub: <a href="https://github.com/y1850243792-beep/ankeraudit" target="_blank" rel="noopener">y1850243792-beep/ankeraudit</a>
-  </footer>
+<div class="scroll-container" id="scroller">
+  <div class="page" data-page="1"><iframe src="pages/page1-cover.html"></iframe></div>
+  <div class="page" data-page="2"><iframe src="pages/page2-traffic-channel.html"></iframe></div>
+  <div class="page" data-page="3"><iframe src="pages/page3-ad-assets-abtest.html"></iframe></div>
+  <div class="page" data-page="4"><iframe src="pages/page4-tech-stack.html"></iframe></div>
+  <div class="page" data-page="5"><iframe src="pages/page5-campaign-crosscheck.html"></iframe></div>
+  <div class="page" data-page="6"><iframe src="pages/page6-action-plan.html"></iframe></div>
 </div>
+
+<!-- Navigation dots -->
+<div class="nav-dots" id="navDots">
+  <button class="nav-dot active" data-target="1"></button>
+  <button class="nav-dot" data-target="2"></button>
+  <button class="nav-dot" data-target="3"></button>
+  <button class="nav-dot" data-target="4"></button>
+  <button class="nav-dot" data-target="5"></button>
+  <button class="nav-dot" data-target="6"></button>
+</div>
+
+<!-- Scroll hint -->
+<div class="scroll-hint" id="scrollHint">
+  <span>向下滚动</span>
+  <div class="chevron"></div>
+</div>
+
+<script>
+(function() {
+  var scroller = document.getElementById('scroller');
+  var dots = document.querySelectorAll('.nav-dot');
+  var hint = document.getElementById('scrollHint');
+  var pages = document.querySelectorAll('.page');
+  var currentPage = 0;
+
+  // Click dot → scroll to page
+  document.getElementById('navDots').addEventListener('click', function(e) {
+    var dot = e.target.closest('.nav-dot');
+    if (!dot) return;
+    var target = parseInt(dot.getAttribute('data-target'));
+    pages[target - 1].scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Track current page on scroll
+  scroller.addEventListener('scroll', function() {
+    var scrollTop = scroller.scrollTop;
+    var viewH = scroller.clientHeight;
+    var pageIndex = Math.round(scrollTop / viewH);
+
+    if (pageIndex !== currentPage) {
+      currentPage = pageIndex;
+      dots.forEach(function(d, i) {
+        d.classList.toggle('active', i === currentPage);
+      });
+      // Hide hint after scrolling past first page
+      if (currentPage > 0) {
+        hint.classList.add('hidden');
+      } else {
+        hint.classList.remove('hidden');
+      }
+    }
+  });
+
+  // Touch support: ensure snap on mobile
+  var touchTimeout;
+  scroller.addEventListener('touchend', function() {
+    clearTimeout(touchTimeout);
+    touchTimeout = setTimeout(function() {
+      var scrollTop = scroller.scrollTop;
+      var viewH = scroller.clientHeight;
+      var targetPage = Math.round(scrollTop / viewH);
+      pages[targetPage].scrollIntoView({ behavior: 'smooth' });
+    }, 80);
+  });
+})();
+</script>
 
 </body>
 </html>
