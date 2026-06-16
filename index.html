@@ -90,60 +90,44 @@
   .meta .m2::before { background: #F5A623; }
   .meta .m3::before { background: #3ED9A1; }
 
-  .cards {
-    display: flex; gap: 14px;
-  }
-  @media (max-width: 480px) { .cards { flex-direction: column; } }
-
-  .card {
-    flex: 1;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 32px 20px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.06);
-    background: rgba(255,255,255,0.02);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    text-decoration: none; color: inherit;
-    cursor: pointer;
-    transition: border-color 0.3s, transform 0.3s;
-    gap: 12px;
-    position: relative; overflow: hidden;
-  }
-  .card:hover {
-    border-color: rgba(255,255,255,0.14);
-    transform: translateY(-2px);
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-  }
-
-  .card-icon { font-size: 32px; margin-bottom: 4px; }
-  .card-label {
+  .start-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 36px;
+    border-radius: 28px;
+    border: 1px solid rgba(38,121,255,0.20);
+    background: rgba(38,121,255,0.06);
+    color: #4dabf7;
     font-family: 'Sora', sans-serif;
-    font-size: 14px; font-weight: 700;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    transition: background 0.3s, border-color 0.3s, transform 0.2s;
     letter-spacing: -0.01em;
   }
-  .card-desc {
-    font-size: 11px; color: #555;
-    line-height: 1.4;
+  .start-btn:hover {
+    background: rgba(38,121,255,0.10);
+    border-color: rgba(38,121,255,0.30);
+    transform: translateY(-1px);
   }
-  .card-ppt .card-icon { color: #4dabf7; }
-  .card-pages .card-icon { color: #a855f7; }
+  .start-btn svg { width: 18px; height: 18px; }
 
-  .pages-list {
+  .pages-grid {
     display: grid; grid-template-columns: 1fr 1fr 1fr;
-    gap: 6px; margin-top: 28px;
+    gap: 8px; margin-top: 28px;
+    width: 100%;
   }
-  .pages-list a {
-    font-size: 11px; color: #555; text-decoration: none;
-    padding: 6px 8px; border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.04);
-    transition: color 0.2s, border-color 0.2s;
+  .pages-grid a {
+    font-size: 12px; color: #777; text-decoration: none;
+    padding: 12px 10px; border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.05);
+    background: rgba(255,255,255,0.015);
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    text-align: center;
   }
-  .pages-list a:hover { color: #aaa; border-color: rgba(255,255,255,0.10); }
+  .pages-grid a:hover {
+    color: #ccc;
+    border-color: rgba(255,255,255,0.10);
+    background: rgba(255,255,255,0.03);
+  }
 
   footer {
     margin-top: 36px;
@@ -170,20 +154,12 @@
     <span class="m3">Ugreen</span>
   </div>
 
-  <div class="cards">
-    <a href="ppt/audit-report.html" class="card card-ppt">
-      <div class="card-icon">&#127916;</div>
-      <div class="card-label">PPT 演示</div>
-      <div class="card-desc">6 页可翻页报告<br>键盘 →/← 翻页</div>
-    </a>
-    <a href="pages/page1-cover.html" class="card card-pages">
-      <div class="card-icon">&#128196;</div>
-      <div class="card-label">逐页浏览</div>
-      <div class="card-desc">独立页面查看<br>每页单独打开</div>
-    </a>
-  </div>
+  <a href="pages/page1-cover.html" class="start-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    开始浏览报告
+  </a>
 
-  <div class="pages-list">
+  <div class="pages-grid">
     <a href="pages/page1-cover.html">01 · 封面</a>
     <a href="pages/page2-traffic-channel.html">02 · 流量大盘</a>
     <a href="pages/page3-ad-assets-abtest.html">03 · A/B 测试</a>
